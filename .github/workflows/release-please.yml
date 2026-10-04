@@ -16,10 +16,11 @@ jobs:
     steps:
       - uses: googleapis/release-please-action@v4
         with:
-          # this assumes that you have created a personal access token
-          # (PAT) and configured it as a GitHub action secret named
-          # `MY_RELEASE_PLEASE_TOKEN` (this secret name is not important).
+          # Personal access token (PAT) stored in the repository secret
+          # `RELEASE_PLEASE_TOKEN`. A PAT is required so the release PR can
+          # trigger other workflows.
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
-          # this is a built-in strategy in release-please, see "Action Inputs"
-          # for more options
-          release-type: simple
+          # Node strategy: bumps the version in package.json and updates
+          # CHANGELOG.md. The `simple` strategy would instead expect a
+          # version.txt file.
+          release-type: node
