@@ -1,25 +1,25 @@
 # AGENTS.md
 
-Hexlet learning project ("ai-for-developers" program): build a call-booking calendar service with AI. Currently a minimal Next.js + Mantine scaffold;
+Учебный проект Хекслета (программа «ai-for-developers»): совместно с ИИ нужно сделать сервис для бронирования календаря звонков. Сейчас это минимальный каркас на Next.js + Mantine.
 
-## Commands
+## Команды
 
-- Package manager is Yarn 4 (`packageManager` in `package.json`, `nodeLinker: node-modules` in `.yarnrc.yml`). Use `yarn`, never npm/pnpm.
-- `yarn dev` — dev server. `yarn build` — production build; this is also the de-facto typecheck (there is no separate `typecheck` script, and `tsc` alone relies on types generated under `.next/`).
-- `yarn lint` runs **oxlint**, not ESLint. Config: `oxlint.config.mjs` (uses the `oxc-config-mantine` preset). It ignores all `.js/.mjs/.cjs/.d.ts` files — only `.ts/.tsx` is linted.
-- `yarn test` runs **Vitest** once (CI mode); `yarn test:watch` for watch mode. Config: `vitest.config.mts` (jsdom + React plugin, setup in `vitest.setup.ts`). Colocate tests as `*.test.tsx`. `@testing-library/jest-dom` matchers are available globally in tests.
-- Run `yarn lint && yarn test && yarn build` before committing.
+- Пакетный менеджер — Yarn 4 (поле `packageManager` в `package.json`, `nodeLinker: node-modules` в `.yarnrc.yml`). Используйте `yarn`, никогда npm/pnpm.
+- `yarn dev` — dev-сервер. `yarn build` — production-сборка; она же де-факто проверка типов (отдельного скрипта `typecheck` нет, а `tsc` в одиночку полагается на типы, сгенерированные в `.next/`).
+- `yarn lint` запускает **oxlint**, а не ESLint. Конфиг: `oxlint.config.mjs` (пресет `oxc-config-mantine`). Он игнорирует все файлы `.js/.mjs/.cjs/.d.ts` — линтятся только `.ts/.tsx`.
+- `yarn test` однократно запускает **Vitest** (режим CI); `yarn test:watch` — watch-режим. Конфиг: `vitest.config.mts` (jsdom + React-плагин, setup в `vitest.setup.ts`). Тесты размещайте рядом с кодом как `*.test.tsx`. Матчеры `@testing-library/jest-dom` доступны в тестах глобально.
+- Перед коммитом запускайте `yarn lint && yarn test && yarn build`.
 
-## Hard constraints
+## Жёсткие ограничения
 
-- Do not edit, rename, or delete `.github/workflows/hexlet-check.yml` (or the repository) — Hexlet checks depend on it. Stated in both the workflow header and README.
-- `release-please.yml` runs on every push to `main` → write commit messages as Conventional Commits (`feat:`, `fix:`, …).
-- `.github/workflows/ci.yml` runs `lint` + `test` + `build` on every push. Keep it in sync with the scripts above (e.g. update it if the Node version or commands change).
+- Не редактируйте, не переименовывайте и не удаляйте `.github/workflows/hexlet-check.yml` (равно как и сам репозиторий) — от этого зависят проверки Хекслета. Написано и в заголовке workflow, и в README.
+- `release-please.yml` запускается на каждый push в `main` → пишите сообщения коммитов в формате Conventional Commits (`feat:`, `fix:`, …).
+- `.github/workflows/ci.yml` запускает `lint` + `test` + `build` на каждый push. Держите его синхронным со скриптами выше (например, обновите при смене версии Node или команд).
 
-## Mantine + Next.js integration
+## Интеграция Mantine + Next.js
 
-- App Router lives in `app/` (`layout.tsx`, `page.tsx`); no `src/` or `pages/`.
-- `app/layout.tsx` must keep: the `@mantine/core/styles.css` import, `ColorSchemeScript`, `{...mantineHtmlProps}` on `<html>`, and `MantineProvider theme={theme}`.
-- `theme.ts` exports `createTheme` and must stay a `"use client"` module.
-- `postcss.config.cjs` is required: it defines Mantine breakpoint variables (`mantine-breakpoint-xs` … `-xl`) used by Mantine's responsive mixins in CSS. Don't remove it or add styles expecting plain Tailwind/media behavior.
-- `mantine-styles.d.ts` silences TS for the styles.css import; `next.config.mjs` sets `optimizePackageImports` for `@mantine/core`/`@mantine/hooks`. Keep both.
+- App Router живёт в `app/` (`layout.tsx`, `page.tsx`); директорий `src/` или `pages/` нет.
+- В `app/layout.tsx` должны остаться: импорт `@mantine/core/styles.css`, `ColorSchemeScript`, `{...mantineHtmlProps}` на `<html>` и `MantineProvider theme={theme}`.
+- `theme.ts` экспортирует `createTheme` и должен оставаться модулем с `"use client"`.
+- `postcss.config.cjs` обязателен: в нём заданы переменные брейкпоинтов Mantine (`mantine-breakpoint-xs` … `-xl`), используемые адаптивными миксинами Mantine в CSS. Не удаляйте его и не добавляйте стили в расчёте на обычное поведение Tailwind/медиазапросов.
+- `mantine-styles.d.ts` глушит ошибку TS на импорте styles.css; `next.config.mjs` включает `optimizePackageImports` для `@mantine/core`/`@mantine/hooks`. Сохраните оба.
