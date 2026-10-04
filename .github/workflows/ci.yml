@@ -6,12 +6,14 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 24
-          cache: yarn
+          # Do not let setup-node auto-detect/cache Yarn: it would run the
+          # runner's global Yarn 1 before corepack is enabled.
+          package-manager-cache: false
 
       - run: corepack enable
 
