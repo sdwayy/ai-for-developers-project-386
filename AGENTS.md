@@ -23,3 +23,17 @@
 - `theme.ts` экспортирует `createTheme` и должен оставаться модулем с `"use client"`.
 - `postcss.config.cjs` обязателен: в нём заданы переменные брейкпоинтов Mantine (`mantine-breakpoint-xs` … `-xl`), используемые адаптивными миксинами Mantine в CSS. Не удаляйте его и не добавляйте стили в расчёте на обычное поведение Tailwind/медиазапросов.
 - `mantine-styles.d.ts` глушит ошибку TS на импорте styles.css; `next.config.mjs` включает `optimizePackageImports` для `@mantine/core`/`@mantine/hooks`. Сохраните оба.
+
+## Agent skills
+
+### Issue tracker
+
+Задачи живут в GitHub Issues этого репозитория; работа через `gh` CLI. См. `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Канонические пять ролей с совпадающими именами лейблов. См. `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: `GLOSSARY.md` + `docs/adr/` в корне. См. `docs/agents/domain.md`.
