@@ -16,13 +16,26 @@
 - `release-please.yml` запускается на каждый push в `main` → пишите сообщения коммитов в формате Conventional Commits (`feat:`, `fix:`, …).
 - `.github/workflows/ci.yml` запускает `lint` + `test` + `build` на каждый push. Держите его синхронным со скриптами выше (например, обновите при смене версии Node или команд).
 
+## Архитектура: Feature-Sliced Design
+
+- Слои FSD живут в `src/`: сейчас есть `src/_app/` (инициализация, провайдеры) и `src/_pages/` (страницы). Остальные слои (`shared/`, `features/`, `entities/`) и слой `widgets/` появляются только при реальной надобности — не создавайте пустые каталоги.
+- Слои FSD `app`/`pages` переименованы в `_app`/`_pages`, чтобы не конфликтовать с каталогами роутинга Next.js. Роутинг Next остаётся в `app/` в корне и содержит только тонкие реэкспорты из `@/_pages/*`.
+- Импорты — только из слоёв ниже и только через публичный API слайса (`index.ts`). Алиасы `@/_app/*`, `@/_pages/*` заданы в `tsconfig.json`; новые слои/алиасы добавляйте по мере надобности.
+- Контекст и обоснование решений — в `docs/adr/`, термины — в `GLOSSARY.md`.
+
+### Компоненты
+
+- Каждый компонент — в своей поддиректории `ui/<Component>/` с файлами `<Component>.tsx` и `index.ts` (реэкспорт); плоскую структуру в `ui/` не используем.
+- Базовый вид компонента: `type Props = { ... };` и `export function Component(props: Props) { ... }`. Если пропсов нет — `type Props` не создаём и параметр не объявляем.
+- Крупный компонент разбиваем на подкомпоненты, когда это разумно, — не раздуваем один файл.
+
 ## Интеграция Mantine + Next.js
 
-- App Router живёт в `app/` (`layout.tsx`, `page.tsx`); директорий `src/` или `pages/` нет.
-- В `app/layout.tsx` должны остаться: импорт `@mantine/core/styles.css`, `ColorSchemeScript`, `{...mantineHtmlProps}` на `<html>` и `MantineProvider theme={theme}`.
-- `theme.ts` экспортирует `createTheme` и должен оставаться модулем с `"use client"`.
+- `app/layout.tsx` тонкий: импортирует `@mantine/core/styles.css`, рендерит `ColorSchemeScript` и `{...mantineHtmlProps}` на `<html>`, а детей оборачивает в `<Providers>` из `@/_app/providers`.
+- Провайдер Mantine и тема живут в `src/_app/providers/`; `src/_app/providers/theme.ts` экспортирует `createTheme` и остаётся модулем с `"use client"`.
+- Иконки подключаем из `lucide-react`.
 - `postcss.config.cjs` обязателен: в нём заданы переменные брейкпоинтов Mantine (`mantine-breakpoint-xs` … `-xl`), используемые адаптивными миксинами Mantine в CSS. Не удаляйте его и не добавляйте стили в расчёте на обычное поведение Tailwind/медиазапросов.
-- `mantine-styles.d.ts` глушит ошибку TS на импорте styles.css; `next.config.mjs` включает `optimizePackageImports` для `@mantine/core`/`@mantine/hooks`. Сохраните оба.
+- `mantine-styles.d.ts` глушит ошибку TS на импорте styles.css; `next.config.mjs` включает `optimizePackageImports` для `@mantine/core`/`@mantine/hooks`/`lucide-react`. Сохраните оба.
 
 ## Agent skills
 
@@ -37,3 +50,13 @@
 ### Domain docs
 
 Single-context: `GLOSSARY.md` + `docs/adr/` в корне. См. `docs/agents/domain.md`.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

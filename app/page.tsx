@@ -1,3 +1,1 @@
-export default function HomePage() {
-  return <div>Home page</div>;
-}
+export { HomePage as default, metadata } from "@/_pages/home";

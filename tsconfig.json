@@ -18,6 +18,10 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
+    "paths": {
+      "@/_app/*": ["./src/_app/*"],
+      "@/_pages/*": ["./src/_pages/*"]
+    },
     "plugins": [
       {
         "name": "next"
