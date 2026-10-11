@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/sdwayy/ai-for-developers-project-386/compare/v1.0.0...v1.1.0) (2026-10-11)
+
+
+### Features
+
+* add Playwright e2e tests ([8d2054a](https://github.com/sdwayy/ai-for-developers-project-386/commit/8d2054af57bd8f28f7020d48a9c29d5f3e383ec3))
+
 ## 1.0.0 (2026-10-11)
 
 
