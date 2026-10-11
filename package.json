@@ -9,6 +9,9 @@
     "lint": "oxlint -c oxlint.config.mjs .",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:report": "playwright show-report",
     "api:generate": "tsp compile spec && openapi-ts",
     "api:check": "yarn api:generate && git diff --exit-code -- src/shared/api/generated spec/openapi.json && test -z \"$(git status --porcelain -- src/shared/api/generated spec/openapi.json)\""
   },
@@ -24,6 +27,7 @@
   },
   "devDependencies": {
     "@hey-api/openapi-ts": "0.99.0",
+    "@playwright/test": "^1.64.0",
     "@testing-library/dom": "^10.4.2",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",

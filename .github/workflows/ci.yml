@@ -26,3 +26,35 @@ jobs:
       - run: yarn test
 
       - run: yarn build
+
+  e2e:
+    needs: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          # Do not let setup-node auto-detect/cache Yarn: it would run the
+          # runner's global Yarn 1 before corepack is enabled.
+          package-manager-cache: false
+
+      - run: corepack enable
+
+      - run: yarn install --immutable
+
+      # Только chromium: в playwright.config.ts настроен один проект.
+      - run: yarn playwright install --with-deps chromium
+
+      - run: yarn build
+
+      - run: yarn test:e2e
+
+      - uses: actions/upload-artifact@v5
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30

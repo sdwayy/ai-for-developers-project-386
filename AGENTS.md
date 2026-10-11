@@ -8,13 +8,14 @@
 - `yarn dev` — dev-сервер. `yarn build` — production-сборка; она же де-факто проверка типов (отдельного скрипта `typecheck` нет, а `tsc` в одиночку полагается на типы, сгенерированные в `.next/`).
 - `yarn lint` запускает **oxlint**, а не ESLint. Конфиг: `oxlint.config.mjs` (пресет `oxc-config-mantine`). Он игнорирует все файлы `.js/.mjs/.cjs/.d.ts` — линтятся только `.ts/.tsx`.
 - `yarn test` однократно запускает **Vitest** (режим CI); `yarn test:watch` — watch-режим. Конфиг: `vitest.config.mts` (jsdom + React-плагин, setup в `vitest.setup.ts`). Тесты размещайте рядом с кодом как `*.test.tsx`. Матчеры `@testing-library/jest-dom` доступны в тестах глобально.
+- `yarn test:e2e` запускает сквозные тесты **Playwright** (`@playwright/test`); `yarn test:e2e:ui` — UI-режим, `yarn test:e2e:report` — открыть HTML-отчёт. Конфиг: `playwright.config.ts` (`testDir: "./e2e"`, локально поднимает `yarn dev`, в CI — `yarn start` после `yarn build`). E2E-тесты лежат в корневом `e2e/` и называются `*.spec.ts`, поэтому Vitest их не подхватывает, а Playwright не лезет в `*.test.tsx`. Браузеры ставятся отдельно: `yarn playwright install chromium`.
 - Перед коммитом запускайте `yarn lint && yarn test && yarn build`.
 
 ## Жёсткие ограничения
 
 - Не редактируйте, не переименовывайте и не удаляйте `.github/workflows/hexlet-check.yml` (равно как и сам репозиторий) — от этого зависят проверки Хекслета. Написано и в заголовке workflow, и в README.
 - `release-please.yml` запускается на каждый push в `main` → пишите сообщения коммитов в формате Conventional Commits (`feat:`, `fix:`, …).
-- `.github/workflows/ci.yml` запускает `lint` + `test` + `build` на каждый push. Держите его синхронным со скриптами выше (например, обновите при смене версии Node или команд).
+- `.github/workflows/ci.yml` запускает `lint` + `test` + `build` на каждый push; следом идёт job `e2e` (`needs: check`), который гоняет Playwright. Держите его синхронным со скриптами выше (например, обновите при смене версии Node или команд).
 
 ## Архитектура: Feature-Sliced Design
 
