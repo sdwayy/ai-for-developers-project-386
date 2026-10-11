@@ -20,7 +20,8 @@
     "incremental": true,
     "paths": {
       "@/_app/*": ["./src/_app/*"],
-      "@/_pages/*": ["./src/_pages/*"]
+      "@/_pages/*": ["./src/_pages/*"],
+      "@/shared/*": ["./src/shared/*"]
     },
     "plugins": [
       {

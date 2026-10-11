@@ -19,6 +19,8 @@ jobs:
 
       - run: yarn install --immutable
 
+      - run: make api-check
+
       - run: yarn lint
 
       - run: yarn test
