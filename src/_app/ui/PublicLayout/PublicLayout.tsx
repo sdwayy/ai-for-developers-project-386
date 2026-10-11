@@ -13,10 +13,10 @@ export function PublicLayout(props: Props) {
 
   return (
     <Box mih="100vh" style={{ background: BACKGROUND }}>
-      <Container size="lg" py="lg">
+      <Container size="lg" pt="lg">
         <PublicHeader />
       </Container>
-      <Container size="lg" pb="xl">
+      <Container size="lg" py="xl">
         {children}
       </Container>
     </Box>

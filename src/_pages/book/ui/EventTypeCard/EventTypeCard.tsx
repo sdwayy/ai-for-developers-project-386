@@ -19,7 +19,8 @@ export function EventTypeCard(props: Props) {
       radius="md"
       withBorder
       h="100%"
-      style={{ color: "inherit", textDecoration: "none" }}
+      c="inherit"
+      td="none"
     >
       <Group justify="space-between" align="flex-start" wrap="nowrap">
         <Text fw={600}>{eventType.title}</Text>

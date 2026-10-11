@@ -1,14 +1,13 @@
 import { SimpleGrid, Stack, Text, Title } from "@mantine/core";
 import type { EventType } from "@/shared/api";
+import type { Host } from "@/shared/api/server";
 import { bookContent } from "../../model/book-content";
 import { EventTypeCard } from "../EventTypeCard";
 import { HostSummary } from "../HostSummary";
 
 type Props = {
   eventTypes: EventType[];
-  host: {
-    name: string;
-  };
+  host: Host;
 };
 
 export function BookView(props: Props) {
