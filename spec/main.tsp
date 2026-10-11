@@ -58,3 +58,10 @@ model ErrorResponse {
   @doc("Техническое сообщение об ошибке.")
   message: string;
 }
+
+@doc("Операции над типами встреч.")
+@route("/event-types")
+interface EventTypes {
+  @doc("Список типов встреч в порядке создания.")
+  @get list(): EventType[];
+}

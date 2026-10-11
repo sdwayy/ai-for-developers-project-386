@@ -7,7 +7,7 @@
 - Пакетный менеджер — Yarn 4 (поле `packageManager` в `package.json`, `nodeLinker: node-modules` в `.yarnrc.yml`). Используйте `yarn`, никогда npm/pnpm.
 - `yarn dev` — dev-сервер. `yarn build` — production-сборка; она же де-факто проверка типов (отдельного скрипта `typecheck` нет, а `tsc` в одиночку полагается на типы, сгенерированные в `.next/`).
 - `yarn lint` запускает **oxlint**, а не ESLint. Конфиг: `oxlint.config.mjs` (пресет `oxc-config-mantine`). Он игнорирует все файлы `.js/.mjs/.cjs/.d.ts` — линтятся только `.ts/.tsx`.
-- `yarn test` однократно запускает **Vitest** (режим CI); `yarn test:watch` — watch-режим. Конфиг: `vitest.config.mts` (jsdom + React-плагин, setup в `vitest.setup.ts`). Тесты размещайте рядом с кодом как `*.test.tsx`. Матчеры `@testing-library/jest-dom` доступны в тестах глобально.
+- `yarn test` однократно запускает **Vitest** (режим CI); `yarn test:watch` — watch-режим. Конфиг: `vitest.config.mts` (jsdom + React-плагин, setup в `vitest.setup.ts`). Тесты размещайте рядом с кодом: компонентные — `*.test.tsx` (jsdom), серверные — `*.test.ts` (node с условием `react-server`). Матчеры `@testing-library/jest-dom` доступны в тестах глобально.
 - `yarn test:e2e` запускает сквозные тесты **Playwright** (`@playwright/test`); `yarn test:e2e:ui` — UI-режим, `yarn test:e2e:report` — открыть HTML-отчёт. Конфиг: `playwright.config.ts` (`testDir: "./e2e"`, локально поднимает `yarn dev`, в CI — `yarn start` после `yarn build`). E2E-тесты лежат в корневом `e2e/` и называются `*.spec.ts`, поэтому Vitest их не подхватывает, а Playwright не лезет в `*.test.tsx`. Браузеры ставятся отдельно: `yarn playwright install chromium`.
 - Перед коммитом запускайте `yarn lint && yarn test && yarn build`.
 
@@ -19,9 +19,9 @@
 
 ## Архитектура: Feature-Sliced Design
 
-- Слои FSD живут в `src/`: сейчас есть `src/_app/` (инициализация, провайдеры) и `src/_pages/` (страницы). Остальные слои (`shared/`, `features/`, `entities/`) и слой `widgets/` появляются только при реальной надобности — не создавайте пустые каталоги.
-- Слои FSD `app`/`pages` переименованы в `_app`/`_pages`, чтобы не конфликтовать с каталогами роутинга Next.js. Роутинг Next остаётся в `app/` в корне и содержит только тонкие реэкспорты из `@/_pages/*`.
-- Импорты — только из слоёв ниже и только через публичный API слайса (`index.ts`). Алиасы `@/_app/*`, `@/_pages/*` заданы в `tsconfig.json`; новые слои/алиасы добавляйте по мере надобности.
+- Слои FSD живут в `src/`: сейчас есть `src/_app/` (инициализация, провайдеры, публичная оболочка), `src/_pages/` (страницы) и `src/shared/` (инфраструктура, сейчас `api`). Слои `features/`, `entities/` и `widgets/` появляются только при реальной надобности — не создавайте пустые каталоги.
+- Слои FSD `app`/`pages` переименованы в `_app`/`_pages`, чтобы не конфликтовать с каталогами роутинга Next.js. Роутинг Next остаётся в `app/` в корне и содержит только тонкие реэкспорты: страницы — из `@/_pages/*`, layout'ы оболочек — из `@/_app/*`. Публичные маршруты живут в роут-группе `app/(public)/` (см. ADR-0006).
+- Импорты — только из слоёв ниже и только через публичный API слайса (`index.ts`). Алиасы `@/_app/*`, `@/_pages/*`, `@/shared/*` заданы в `tsconfig.json`; новые слои/алиасы добавляйте по мере надобности.
 - Контекст и обоснование решений — в `docs/adr/`, термины — в `GLOSSARY.md`.
 
 ### Компоненты

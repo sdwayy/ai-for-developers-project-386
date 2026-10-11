@@ -44,3 +44,19 @@ export type EventType = {
      */
     durationMinutes: number;
 };
+
+export type EventTypesListData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/event-types';
+};
+
+export type EventTypesListResponses = {
+    /**
+     * The request has succeeded.
+     */
+    200: Array<EventType>;
+};
+
+export type EventTypesListResponse = EventTypesListResponses[keyof EventTypesListResponses];

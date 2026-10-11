@@ -9,12 +9,23 @@ test.describe("home page", () => {
     ).toBeVisible();
   });
 
-  test("links to the booking page", async ({ page }) => {
+  test("links to the booking page from the header and the call to action", async ({
+    page,
+  }) => {
     await page.goto("/");
 
-    await expect(
-      page.getByRole("link", { name: /Записаться/ }),
-    ).toHaveAttribute("href", "/book");
+    const bookingLinks = page.getByRole("link", { name: /Записаться/ });
+    await expect(bookingLinks).toHaveCount(2);
+    await expect(bookingLinks.first()).toHaveAttribute("href", "/book");
+  });
+
+  test("shows the shared public header", async ({ page }) => {
+    await page.goto("/");
+
+    await expect(page.getByRole("link", { name: "Админка" })).toHaveAttribute(
+      "href",
+      "/admin",
+    );
   });
 
   test("lists the service capabilities", async ({ page }) => {

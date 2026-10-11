@@ -30,3 +30,8 @@ export const zEventType = z.object({
     description: z.string().max(500).optional(),
     durationMinutes: z.int().gte(5).lte(480)
 });
+
+/**
+ * The request has succeeded.
+ */
+export const zEventTypesListResponse = z.array(zEventType);
