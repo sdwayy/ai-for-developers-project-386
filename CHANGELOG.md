@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/sdwayy/ai-for-developers-project-386/compare/v1.1.0...v1.2.0) (2026-10-11)
+
+
+### Features
+
+* add event type catalog with shared public shell ([1152384](https://github.com/sdwayy/ai-for-developers-project-386/commit/1152384c42628e68f0f5826d59c64e55b2f6698c))
+
 ## [1.1.0](https://github.com/sdwayy/ai-for-developers-project-386/compare/v1.0.0...v1.1.0) (2026-10-11)
 
 
